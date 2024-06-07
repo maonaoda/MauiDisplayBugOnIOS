@@ -31,12 +31,11 @@ namespace MauiApp6
                 var bounds = AdjustForSafeArea(Bounds).ToRectangle();
 
                 var widthConstraint = bounds.Width;
-                var heightConstraint = bounds.Height;
 
                 var size = CrossPlatformLayout.CrossPlatformMeasure(widthConstraint, double.PositiveInfinity);
-                if (!(_lastMeasureHeight == size.Height && _lastMeasureWidth == size.Width)
-                    && CrossPlatformLayout is VisualElement element
-                    && Math.Abs(heightConstraint - size.Height) > 0.001)
+                if (!(_lastMeasureHeight == size.Height && _lastMeasureWidth == size.Width) &&
+                    CrossPlatformLayout is VisualElement element &&
+                    (double.IsNaN(_lastMeasureHeight) || Math.Abs(_lastMeasureHeight - size.Height) > 0.001))
                 {
                     CacheMeasureConstraintsV2(size.Width, size.Height);
                     element.InvalidateMeasureNonVirtual(Microsoft.Maui.Controls.Internals.InvalidationTrigger.Undefined);
