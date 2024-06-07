@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:base="clr-namespace:MauiApp6"
+             x:DataType="base:MainPageViewModel"
+             x:Class="MauiApp6.MainPage">
+  <ContentPage.Resources>
+    <DataTemplate x:Key="OptionDataTemplate" x:DataType="base:Option">
+      <Grid RowDefinitions="auto,1" ColumnDefinitions="auto,*"
+            RowSpacing="10" ColumnSpacing="20">
+        <CheckBox Grid.Row="0" Grid.Column="0"
+                  IsChecked="{Binding IsChecked,Mode=OneWay}"/>
+        <Label Grid.Row="0" Grid.Column="1"
+               VerticalTextAlignment="Center" 
+               Text="{Binding Name}" />
+        <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                 HeightRequest="1" BackgroundColor="Gray" />
+      </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="MonkeyDataTemplate" x:DataType="base:Monkey">
+      <base:CustomGrid RowDefinitions="auto,auto">
+        <Border Grid.Row="0" Padding="0" 
+                StrokeShape="{RoundRectangle CornerRadius='20,20,0,0'}" 
+                StrokeThickness="0"
+                Margin="0,0,0,30">
+          <Grid RowDefinitions="auto,auto,auto,auto,auto" ColumnDefinitions="auto"
+                        BackgroundColor="LightGreen" Padding="10"
+                        RadioButtonGroup.GroupName="{Binding Name.Value}" RadioButtonGroup.SelectedValue="{Binding SelectIndex.Value}">
+            <Label Grid.Row="0" Grid.Column="0"
+                   Text="{Binding Name.Value}" />
+            <Label Grid.Row="1" Grid.Column="0">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="ShowOptions:"/>
+                        <Span Text="{Binding ShowOptions.Value}" FontAttributes="Bold"/>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <Label Grid.Row="2" Grid.Column="0">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="GroupName:"/>
+                        <Span Text="{Binding Name.Value}" FontAttributes="Bold"/>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <RadioButton Grid.Row="3" Grid.Column="0"
+                         GroupName="{Binding Name.Value}" Content="OFF">
+              <RadioButton.Value>
+                <x:Int32>0</x:Int32>
+              </RadioButton.Value>
+            </RadioButton>
+            <RadioButton Grid.Row="4" Grid.Column="0" GroupName="{Binding Name.Value}" Content="ON">
+              <RadioButton.Value>
+                <x:Int32>1</x:Int32>
+              </RadioButton.Value>
+            </RadioButton>
+          </Grid>
+        </Border>
+
+        <Border Grid.Row="1" Margin="0,-31,0,60"
+                StrokeThickness="0"
+                IsVisible="{Binding ShowOptions.Value}">
+          <Border.Background>
+            <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+              <GradientStop Color="LightGreen" Offset="0.1"/>
+              <GradientStop Color="LightCyan" Offset="1"/>
+            </LinearGradientBrush>
+          </Border.Background>
+          <VerticalStackLayout BindableLayout.ItemsSource="{Binding Options.Value}"
+                               BindableLayout.ItemTemplate="{StaticResource OptionDataTemplate}"/>
+        </Border>
+        <Label Grid.Row="1" Text="Options" Margin="10,-50,0,0" IsVisible="{Binding ShowOptions.Value}" InputTransparent="True"/>
+      </base:CustomGrid>
+    </DataTemplate>
+  </ContentPage.Resources>
+  <ContentPage.Content>
+    <Grid RowDefinitions="auto,auto,auto,*" ColumnDefinitions="*,*"
+          RowSpacing="10" ColumnSpacing="20" Padding="20">
+      <Border Grid.Row="0" Grid.RowSpan="2" Grid.Column="0"
+              StrokeThickness="0" BackgroundColor="LightPink" StrokeShape="{RoundRectangle CornerRadius='20'}">
+        <Grid RowDefinitions="auto,auto,*" RowSpacing="15">
+          <Grid Grid.Row="0"
+                RowDefinitions="auto,auto,auto,auto" ColumnDefinitions="auto"
+                Padding="10" RadioButtonGroup.GroupName="SampleItem" RadioButtonGroup.SelectedValue="{Binding SelectIndex.Value}">
+            <Label Grid.Row="0" Grid.Column="0">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="ShowOptions:"/>
+                        <Span Text="{Binding ShowOptions.Value}" FontAttributes="Bold"/>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <Label Grid.Row="1" Grid.Column="0">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="SelectIndex:"/>
+                        <Span Text="{Binding SelectIndex.Value}" FontAttributes="Bold"/>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+
+            <RadioButton Grid.Row="2" Grid.Column="0"
+                         GroupName="SampleItem" Content="OFF">
+              <RadioButton.Value>
+                <x:Int32>0</x:Int32>
+              </RadioButton.Value>
+            </RadioButton>
+            <RadioButton Grid.Row="3" Grid.Column="0" GroupName="SampleItem" Content="ON">
+              <RadioButton.Value>
+                <x:Int32>1</x:Int32>
+              </RadioButton.Value>
+            </RadioButton>
+          </Grid>
+
+          <Label Grid.Row="1" Text="Options" Margin="10,0,0,0" IsVisible="{Binding ShowOptions.Value}"/>
+          <VerticalStackLayout Grid.Row="2"
+                               IsVisible="{Binding ShowOptions.Value}"
+                               BindableLayout.ItemsSource="{Binding Options.Value}"
+                               BindableLayout.ItemTemplate="{StaticResource OptionDataTemplate}"/>
+        </Grid>
+      </Border>
+      <VerticalStackLayout Grid.Row="0" Grid.Column="1" Padding="10" BackgroundColor="LightCoral"
+                           BindableLayout.ItemsSource="{Binding Options.Value}"
+                           BindableLayout.ItemTemplate="{StaticResource OptionDataTemplate}"/>
+
+      <Border Grid.Row="1" Grid.Column="1" IsVisible="{Binding ShowOptions.Value}"
+              StrokeThickness="0" BackgroundColor="LightGoldenrodYellow" StrokeShape="{RoundRectangle CornerRadius='20'}">
+        <VerticalStackLayout BindableLayout.ItemsSource="{Binding Options.Value}"
+                             BindableLayout.ItemTemplate="{StaticResource OptionDataTemplate}"/>
+      </Border>
+
+      <Label Text="CollectionView"  Grid.Row="2" Grid.Column="0"/>
+      <CollectionView Grid.Row="3" Grid.Column="0"
+                      ItemsSource="{Binding MonkeyList.Value}"
+                      ItemTemplate="{StaticResource MonkeyDataTemplate}">
+      </CollectionView>
+      <Label Text="ScrollView"  Grid.Row="2" Grid.Column="1"/>
+      <ScrollView Grid.Row="3" Grid.Column="1" >
+        <VerticalStackLayout BindableLayout.ItemsSource="{Binding MonkeyList2.Value}"
+                             BindableLayout.ItemTemplate="{StaticResource MonkeyDataTemplate}">
+        </VerticalStackLayout>
+      </ScrollView>
+    </Grid>
+  </ContentPage.Content>
+</ContentPage>
